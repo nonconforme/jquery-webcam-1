@@ -29,12 +29,12 @@ $(document).ready( function() {
 
         /**
          * Aligns video output on stage
-         * 
+         *
          * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageAlign.html
          * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/Stage.html#align
          * Empty value defaults to "centered" option
          */
-        StageAlign: '', 
+        StageAlign: '',
 
         cameraId: 'AS3webcamObject',
         callTarget: 'webcam',
@@ -51,10 +51,11 @@ $(document).ready( function() {
             this.isSwfReady = true;
             var cam = document.getElementById(this.cameraId);
 
-            this.save          = function()  { try { return cam.save();          } catch(e) { this.swfApiFail(e); } }
-            this.setCamera     = function(i) { try { return cam.setCamera(i);    } catch(e) { this.swfApiFail(e); } }
-            this.getCameraList = function()  { try { return cam.getCameraList(); } catch(e) { this.swfApiFail(e); } }
-            this.getResolution = function()  { try { return cam.getResolution(); } catch(e) { this.swfApiFail(e); } },
+            this.save          = function()  { try { return cam.save();          } catch(e) { this.swfApiFail(e); } };
+            this.setCamera     = function(i) { try { return cam.setCamera(i);    } catch(e) { this.swfApiFail(e); } };
+            this.getCameraList = function()  { try { return cam.getCameraList(); } catch(e) { this.swfApiFail(e); } };
+            this.getResolution = function()  { try { return cam.getResolution(); } catch(e) { this.swfApiFail(e); } };
+            this.saveAndPost   = function(o) { try { return cam.saveAndPost(o);  } catch(e) { this.swfApiFail(e); } };
 
             this.cameraReady();
         },

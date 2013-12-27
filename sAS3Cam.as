@@ -38,12 +38,14 @@ package {
     import flash.events.*;
     import flash.utils.ByteArray;
     import flash.utils.Timer;
+    import flash.net.*;
 
     import flash.display.StageAlign;
     import flash.display.StageScaleMode;
     import flash.display.StageQuality;
 
     import com.adobe.images.JPGEncoder;
+    import com.jonas.net.Multipart;
     import Base64;
 
     public class sAS3Cam extends Sprite {
@@ -146,9 +148,9 @@ package {
             }
         }
 
-        private function extCall(func:String):Boolean {
+        private function extCall(func:String, ...args):Boolean {
             var target:String = this.loaderInfo.parameters["callTarget"];
-            return ExternalInterface.call(target + "." + func);
+            return ExternalInterface.call(target + "." + func, args);
         }
 
         private function isContainerReady():Boolean {
@@ -158,6 +160,7 @@ package {
 
         private function setupCallbacks():void {
             ExternalInterface.addCallback("save", save);
+            ExternalInterface.addCallback("saveAndPost", saveAndPost);
             ExternalInterface.addCallback("setCamera", setCamera);
             ExternalInterface.addCallback("getResolution", getResolution);
             ExternalInterface.addCallback("getCameraList", getCameraList);
@@ -210,6 +213,26 @@ package {
             var byteArray:ByteArray = new JPGEncoder(quality).encode(bmd);
             var string:String = Base64.encodeByteArray(byteArray);
             return string;
+        }
+
+        public function saveAndPost(options:Object):void {
+            bmd.draw(video);
+            video.attachCamera(null); //this stops video stream, video will pause on last frame (like a preview)
+            var quality:Number = 100;
+            var byteArray:ByteArray = new JPGEncoder(quality).encode(bmd);
+
+            // http://www.displayobject.fr/2012/08/03/posting-multipartform-data-using-as3/
+            var form:Multipart = new Multipart(options.url);
+            form.addFile(options.filefield, byteArray, "image/jpeg", options.filename);
+            for (var name:String in options.data) {
+                form.addField(name, options.data[name]);
+            }
+
+            var loader:URLLoader = new URLLoader();
+            loader.addEventListener(Event.COMPLETE, function(evt:Event):void {
+                ExternalInterface.call(options.js_callback, evt.target.data);
+            });
+            loader.load(form.request);
         }
     }
 }
