@@ -95,6 +95,13 @@ package {
             video = new Video(camResolution[0],camResolution[1]);
             video.smoothing  = doSmoothing;
             video.deblocking = doDeblocking;
+
+            var ratio:Number  = video.width / video.height;
+
+            video.width = Math.max(stage.stageWidth, stage.stageHeight * ratio);
+            video.height = Math.max(stage.stageHeight, stage.stageWidth / ratio);
+            video.x = (stage.stageWidth - video.width) / 2;
+            video.y = (stage.stageHeight - video.height) / 2;
             video.attachCamera(useCamera);
             addChild(video);
         }
