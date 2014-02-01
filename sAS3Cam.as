@@ -48,8 +48,8 @@ package {
     import flash.display.StageQuality;
 
     import com.adobe.images.JPGEncoder;
+    import com.dynamicflash.util.Base64;
     import com.jonas.net.Multipart;
-    import Base64;
 
     public class sAS3Cam extends Sprite {
 
