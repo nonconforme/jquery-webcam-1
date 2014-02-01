@@ -87,16 +87,16 @@
 
                     this.isCameraEnabled = true;
                     $('#popup-webcam-cams')
-                        .append($.map(this.getCameraList(), function() {
-                            return '<option value="' + i + '">' + cams[i] + '</option>';
+                        .append($.map(this.getCameraList(), function(cam, i) {
+                            return '<option value="' + i + '">' + cam + '</option>';
                         }).join(''));
 
-                    setTimeout(function() {
+                    setTimeout($.proxy(function() {
                         this.setCamera('0');
                         $('#popup-webcam-take-photo')
                             .prop('disabled', false)
                             .show();
-                    }, 750);
+                    }, this), 750);
                 }
             });
 
