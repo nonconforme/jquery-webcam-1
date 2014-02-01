@@ -3,7 +3,6 @@
 *
 * Copyright (c) 2014, Sergey Shilko (sergey.shilko@gmail.com)
 *
-* @author Ricardo Santos
 * @author Sergey Shilko
 * @see https://github.com/thorin/jquery-webcam
 *
