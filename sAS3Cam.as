@@ -1,7 +1,7 @@
 /**
 * jQuery AS3 Webcam
 *
-* Copyright (c) 2012, Sergey Shilko (sergey.shilko@gmail.com)
+* Copyright (c) 2014, Sergey Shilko (sergey.shilko@gmail.com)
 *
 * @author Sergey Shilko
 * @see https://github.com/sshilko/jQuery-AS3-Webcam
@@ -10,6 +10,9 @@
 
 /* SWF external interface:
  * webcam.save() - get base64 encoded JPEG image
+ * webcam.saveAndPost() - post JPEG image
+ * webcam.pause() - pause the camera
+ * webcam.play() - resume the camera
  * webcam.getCameraList() - get list of available cams
  * webcam.setCamera(i) - set camera, camera index retrieved with getCameraList
  * webcam.getResolution() - get camera resolution actually applied
