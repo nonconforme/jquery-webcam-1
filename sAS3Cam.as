@@ -166,11 +166,13 @@ package {
         }
 
         private function setupCallbacks():void {
+            ExternalInterface.addCallback("setCamera", setCamera);
+            ExternalInterface.addCallback("getCameraList", getCameraList);
+            ExternalInterface.addCallback("getResolution", getResolution);
             ExternalInterface.addCallback("save", save);
             ExternalInterface.addCallback("saveAndPost", saveAndPost);
-            ExternalInterface.addCallback("setCamera", setCamera);
-            ExternalInterface.addCallback("getResolution", getResolution);
-            ExternalInterface.addCallback("getCameraList", getCameraList);
+            ExternalInterface.addCallback("pause", pause);
+            ExternalInterface.addCallback("play", play);
             extCall('cameraConnected');
             /* when we have pernament accept policy --> */
             if (!camera.muted) {
@@ -240,6 +242,14 @@ package {
                 ExternalInterface.call(options.js_callback, evt.target.data);
             });
             loader.load(form.request);
+        }
+
+        public function pause():void {
+            video.attachCamera(null);
+        }
+
+        public function play():void {
+            video.attachCamera(camera);
         }
     }
 }

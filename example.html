@@ -1,8 +1,9 @@
+<!DOCTYPE html>
 <!--
 /**
-* jQuery AS3 Webcam
+* jQuery Webcam
 *
-* Copyright (c) 2012, Sergey Shilko (sergey.shilko@gmail.com)
+* Copyright (c) 2014, Sergey Shilko (sergey.shilko@gmail.com)
 *
 * @author Sergey Shilko
 * @see https://github.com/sshilko/jQuery-AS3-Webcam
@@ -25,7 +26,13 @@
         <table border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td class="webcam-container size640x480">
-                    <div id="webcam" class="size640x480"></div>
+                    <div id="webcam"
+                         data-swffile="sAS3Cam.swf"
+                         data-preview-width="640" data-preview-height="480"
+                         data-resolution-width="640" data-resolution-height="480"
+                         data-stage-scale-mode="noScale" data-stage-align="TL"
+                         class="size640x480">
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -34,12 +41,11 @@
                         <select id="popup-webcam-cams"></select>
                     </div>
                     <div>
-                        <input
-                        id="popup-webcam-take-photo"
-                        type="button"
-                        disabled="disabled"
-                        value="Take a photo"
-                        style="display:none" />
+                        <input id="popup-webcam-take-photo"
+                               type="button"
+                               disabled="disabled"
+                               value="Take a photo"
+                               style="display:none" />
                         </div>
                     <p class="webcam-error"></p>
                 </td>
@@ -48,41 +54,18 @@
         <br/>
         <div id="result"></div>
         <br/>
-        <h4>The result above should look similar to this:</h2>
+
+        <h4>The result above should look similar to this:</h4>
         <img src="the-source.jpeg" align="left" border="1" />
+
         <script type="text/javascript">
-        $(document).ready(function() {
-            $("#webcam").webcam({
-                swffile: "sAS3Cam.swf?v="+Math.random(),
-
-                previewWidth: 640,
-                previewHeight: 480,
-
-                resolutionWidth: 640,
-                resolutionHeight: 480,
-
-                /**
-                 * Determine if we need to stretch or scale the captured stream
-                 *
-                 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/Stage.html#scaleMode
-                 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageScaleMode.html
-                 */
-                StageScaleMode: 'noScale', //
-
-                /**
-                 * Aligns video output on stage
-                 * 
-                 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/StageAlign.html
-                 * @see http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/display/Stage.html#align
-                 * Empty value defaults to "centered" option
-                 */
-                StageAlign: 'TL', 
-
+        $(function() {
+            $('#webcam').webcam({
                 noCameraFound: function () {
                     this.debug('error', 'Web camera is not available');
                 },
 
-                swfApiFail: function(e) {
+                error: function(e) {
                     this.debug('error', 'Internal camera plugin error');
                 },
 
@@ -100,59 +83,51 @@
 
                 cameraEnabled:  function () {
                     this.debug('notice', 'Camera enabled');
-                    var cameraApi = this;
-                    if (cameraApi.isCameraEnabled) {
-                        return;
-                    } else {
-                        cameraApi.isCameraEnabled = true;
-                    }
-                    var cams = cameraApi.getCameraList();
+                    if (this.isCameraEnabled) return;
 
-                    for(var i in cams) {
-                        $("#popup-webcam-cams").append("<option value='"+i+"'>" + cams[i] + "</option>");
-                    }
+                    this.isCameraEnabled = true;
+                    $('#popup-webcam-cams')
+                        .append($.map(this.getCameraList(), function() {
+                            return '<option value="' + i + '">' + cams[i] + '</option>';
+                        }).join(''));
 
                     setTimeout(function() {
-                        $("#popup-webcam-take-photo").removeAttr('disabled');
-                        $("#popup-webcam-take-photo").show();
-                        cameraApi.setCamera('0');
+                        this.setCamera('0');
+                        $('#popup-webcam-take-photo')
+                            .prop('disabled', false)
+                            .show();
                     }, 750);
+                }
+            });
 
-                    $("#popup-webcam-cams").change(function() {
-                        var success = cameraApi.setCamera($(this).val());
-                        if (!success) {
-                            cameraApi.debug('error', 'Unable to select camera');
-                        } else {
-                            cameraApi.debug('notice', 'Camera changed');
-                        }
-                    });
+            $('#popup-webcam-cams').change(function() {
+                var $cam = $('#webcam');
+                var success = $cam.webcam('setCamera', $(this).val());
+                if (!success) {
+                    $cam.webcam('debug', 'error', 'Unable to select camera');
+                } else {
+                    $cam.webcam('debug', 'notice', 'Camera changed');
+                }
+            });
 
-                    $('#popup-webcam-take-photo').click(function() {
-                        var result = cameraApi.save();
-                        if (result && result.length) {
-                            var actualShotResolution = cameraApi.getResolution();
+            $('#popup-webcam-take-photo').click(function(e) {
+                e.preventDefault();
 
-                            var img = new Image();
-                            img.src = 'data:image/jpeg;base64,' + result;
-                            $("#result").append(img);
+                var api = $('#webcam').data('webcam');
+                var result = api.save();
+                if (result && result.length) {
+                    var shotResolution = api.getResolution();
 
-                            alert('base64encoded jpeg (' + actualShotResolution[0] + 'x' + actualShotResolution[1] + '): ' + result.length + 'chars');
+                    var img = new Image();
+                    img.src = 'data:image/jpeg;base64,' + result;
+                    $('#result').append(img);
 
-                            /* resume camera capture */
-                            cameraApi.setCamera($("#popup-webcam-cams").val());
-                        } else {
-                            cameraApi.debug('error', 'Broken camera');
-                        }
-                    });
+                    alert('base64encoded jpeg (' + shotResolution[0] + 'x' + shotResolution[1] + '): ' + result.length + 'chars');
 
-
-                    var reload = function() {
-                        $('#popup-webcam-take-photo').show();
-                    };
-
-                    $('#popup-webcam-save').click(function() {
-                            reload();
-                    });
+                    /* resume camera capture */
+                    api.setCamera($('#popup-webcam-cams').val());
+                } else {
+                    api.debug('error', 'Broken camera');
                 }
             });
         });

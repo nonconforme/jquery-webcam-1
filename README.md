@@ -1,22 +1,21 @@
 ```
 /**
- * jQuery AS3 Webcam
- * Copyright (c) 2012, Sergey Shilko (sergey.shilko@gmail.com)
+ * jQuery Webcam
+ * Copyright (c) 2014, Sergey Shilko (sergey.shilko@gmail.com)
  * @author Sergey Shilko
- * @see https://github.com/sshilko/jQuery-AS3-Webcam
- * @see http://sshilko.github.io/examples/jQuery-AS3-Webcam/example.html
+ * @see https://github.com/thorin/jquery-webcam
  */
 ```
 
 ## Demo
-http://sshilko.github.io/examples/jQuery-AS3-Webcam/example.html
+http://thorin.github.io/jquery-webcam/example.html
 
 ## Overview
 
 * jQuery AS3 Webcam, you will be able to make JPEG captures of web camera, all interactions are made thru javascript.
 * Javascript callback will receive base64 encoded JPEG image from webcamera.
 * Support different webcam resolutions (320x240, 640x480, any).
-* Adaptive stage scaling, align options 
+* Adaptive stage scaling, align options
 
 SWF external interface:
 ```
