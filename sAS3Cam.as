@@ -9,12 +9,12 @@
 **/
 
 /* SWF external interface:
- * webcam.save() - get base64 encoded JPEG image
- * webcam.saveAndPost() - post JPEG image
- * webcam.pause() - pause the camera
- * webcam.play() - resume the camera
+ * webcam.save()          - get base64 encoded JPEG image
+ * webcam.saveAndPost()   - post JPEG image
+ * webcam.pause()         - pause the camera
+ * webcam.play()          - resume the camera
  * webcam.getCameraList() - get list of available cams
- * webcam.setCamera(i) - set camera, camera index retrieved with getCameraList
+ * webcam.setCamera(i)    - set camera, camera index retrieved with getCameraList
  * webcam.getResolution() - get camera resolution actually applied
  * */
 
@@ -24,7 +24,7 @@
  * webcam.noCameraFound() - SWF response that it cannot find any suitable camera
  * webcam.cameraEnabled() - SWF response when camera tracking is enabled (this is called multiple times, use isCameraEnabled flag)
  * webcam.cameraDisabled()- SWF response, user denied usage of camera
- * webcam.swfApiFail()    - Javascript failed to make call to SWF
+ * webcam.error()         - Javascript failed to make call to SWF
  * webcam.debug()         - debug callback used from SWF and can be used from javascript side too
  * */
 
