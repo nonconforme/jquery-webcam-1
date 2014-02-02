@@ -248,7 +248,7 @@ jQuery(function($) {
 
       this.video.play()
     },
-    setCamera:     function(i) { /* if the camera is paused resume */ return true; },
+    setCamera:     function(i) { return true; },
     getCameraList: function()  { return [] },
     getResolution: function()  { return [this.video.videoWidth, this.video.videoHeight] },
     pause:         function()  { this.video.pause() },
