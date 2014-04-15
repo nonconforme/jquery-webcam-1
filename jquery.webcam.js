@@ -164,7 +164,7 @@ jQuery(function($) {
         width:      Math.max(this.options.previewWidth, this.options.previewHeight * vratio),
         height:     Math.max(this.options.previewHeight, this.options.previewWidth / vratio),
         marginLeft: Math.min(0, - (this.options.previewHeight * vratio - this.options.previewWidth) / 2),
-        marginTop:  Math.min(0, - (this.options.previewWidth / vratio - this.options.previewWidth) / 2)
+        marginTop:  Math.min(0, - (this.options.previewWidth / vratio - this.options.previewHeight) / 2)
       })
       var pratio = this.options.previewWidth / this.options.previewHeight
       this.$canvas.attr({
