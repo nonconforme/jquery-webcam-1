@@ -49,32 +49,32 @@ jQuery(function($) {
       this.id = this.setUid(this.$element)
       this.options = this.getOptions(options)
       var callTarget = "jQuery('#" + this.id + "').data('webcam')"
+      var flashvars = $.param({
+          callTarget: callTarget,
+          resolutionWidth: this.options.resolutionWidth,
+          resolutionHeight: this.options.resolutionHeight,
+          smoothing: this.options.videoSmoothing,
+          deblocking: this.options.videoDeblocking,
+          StageScaleMode: this.options.stageScaleMode,
+          StageAlign: this.options.stageAlign
+      })
+      var embed = '<object id="'+this.id+'Object" type="application/x-shockwave-flash" data="'+this.options.swffile+'" ' +
+            'width="'+this.options.previewWidth+'" height="'+this.options.previewHeight+'">' +
+          '<param name="movie" value="'+this.options.swffile+'" />' +
+          '<param name="FlashVars" value="' + flashvars + '" />' +
+          '<param name="bgcolor" value="'+this.options.bgcolor+'" />' +
+          '<param name="allowScriptAccess" value="always" />' +
+          '<param name="wmode" value="opaque" />' +
+          '</object>'
 
-      this.$cam = $('<object>', {
-          type: 'application/x-shockwave-flash',
-          data: this.options.swffile,
-          width: this.options.previewWidth,
-          height: this.options.previewHeight
-        }).append(
-          $('<param>', { name: 'movie', value: this.options.swffile }),
-          $('<param>', { name: 'allowScriptAccess', value: 'always' }),
-          $('<param>', { name: 'bgcolor', value: this.options.bgcolor }),
-          $('<param>', { name: 'FlashVars', value: $.param({
-              callTarget: callTarget,
-              resolutionWidth: this.options.resolutionWidth,
-              resolutionHeight: this.options.resolutionHeight,
-              smoothing: this.options.videoSmoothing,
-              deblocking: this.options.videoDeblocking,
-              StageScaleMode: this.options.stageScaleMode,
-              StageAlign: this.options.stageAlign
-            })
-          }))
+      this.$cam = $(embed)
 
       this.$element.append(this.$cam)
       this.cam = this.$cam[0]
     },
     cameraConnected: function () {
       this.isSwfReady = true
+      this.cam = document.getElementById(this.id + 'Object')
       this.cameraReady()
     },
 
@@ -164,7 +164,7 @@ jQuery(function($) {
         width:      Math.max(this.options.previewWidth, this.options.previewHeight * vratio),
         height:     Math.max(this.options.previewHeight, this.options.previewWidth / vratio),
         marginLeft: Math.min(0, - (this.options.previewHeight * vratio - this.options.previewWidth) / 2),
-        marginTop:  Math.min(0, - (this.options.previewWidth / vratio - this.options.previewWidth) / 2)
+        marginTop:  Math.min(0, - (this.options.previewWidth / vratio - this.options.previewHeight) / 2)
       })
       var pratio = this.options.previewWidth / this.options.previewHeight
       this.$canvas.attr({
@@ -197,13 +197,13 @@ jQuery(function($) {
           success: function(data) { eval(options.js_callback)(data) },
           error: function(xhr, status, e) { self.error(e) }
         })
-      }, 'image/jpg', 1.0);
+      }, 'image/jpeg', 1.0);
     },
 
     save: function() {
       try {
         this.captureToCanvas()
-        var data = this.$canvas[0].toDataURL('image/jpg', 1.0);
+        var data = this.$canvas[0].toDataURL('image/jpeg', 1.0);
         this.$canvas.remove();
         return data.substring(data.indexOf(',')+1);
       } catch(e) {
@@ -217,7 +217,7 @@ jQuery(function($) {
       }
 
       // take apart data URL
-      var url = this.$canvas[0].toDataURL('image/jpg', 1.0)
+      var url = this.$canvas[0].toDataURL('image/jpeg', 1.0)
       var parts = url.match(/^data:([^;]+)(;base64)?,(.*)$/)
 
       // assume base64 encoding
@@ -258,7 +258,7 @@ jQuery(function($) {
       if (this.video.mozSrcObject !== undefined) {
         this.video.mozSrcObject = null
       } else {
-        this.video.src = null
+        this.video.src = ''
       }
       this.stream.stop()
     }
@@ -352,7 +352,7 @@ jQuery(function($) {
        */
       stageAlign: 'TL',
 
-      swffile: "sAS3Cam.swf",
+      swffile: "sAS3Cam.swf"
     })
   }
 
