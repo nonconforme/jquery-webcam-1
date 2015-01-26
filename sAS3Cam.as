@@ -175,7 +175,7 @@ package {
             ExternalInterface.addCallback("save", save);
             ExternalInterface.addCallback("saveAndPost", saveAndPost);
             ExternalInterface.addCallback("pause", pause);
-            ExternalInterface.addCallback("camPlay", play);
+            ExternalInterface.addCallback("playCam", playCam);
             extCall('cameraConnected');
             /* when we have pernament accept policy --> */
             if (!camera.muted) {
@@ -251,7 +251,7 @@ package {
             video.attachCamera(null);
         }
 
-        public function play():void {
+        public function playCam():void {
             video.attachCamera(camera);
         }
     }
