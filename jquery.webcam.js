@@ -84,7 +84,7 @@ jQuery(function($) {
     getCameraList:   function()  { try { return this.cam.getCameraList() } catch(e) { this.error(e) } },
     getResolution:   function()  { try { return this.cam.getResolution() } catch(e) { this.error(e) } },
     pause:           function()  { try { return this.cam.pause()         } catch(e) { this.error(e) } },
-    play:            function()  { try { return this.cam.play()          } catch(e) { this.error(e) } }
+    play:            function()  { try { return this.cam.camPlay()       } catch(e) { this.error(e) } }
   })
 
   WebcamGum.prototype = $.extend({}, WebcamBase, {

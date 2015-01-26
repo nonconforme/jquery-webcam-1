@@ -175,7 +175,7 @@ package {
             ExternalInterface.addCallback("save", save);
             ExternalInterface.addCallback("saveAndPost", saveAndPost);
             ExternalInterface.addCallback("pause", pause);
-            ExternalInterface.addCallback("play", play);
+            ExternalInterface.addCallback("camPlay", play);
             extCall('cameraConnected');
             /* when we have pernament accept policy --> */
             if (!camera.muted) {

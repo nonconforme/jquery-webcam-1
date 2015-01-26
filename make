@@ -7,8 +7,8 @@ echo "Compilation is made with native AS3 compiler 'mxmlc'"
 echo " "
 
 ME="`whoami`"
-FLEX_SDK_HOME="$HOME/opt/flex_sd_4.6/"
-JAVA6_PATH="/usr/lib/jvm/java-6-oracle/bin/java"
+FLEX_SDK_HOME="$HOME/opt/flex_sdk_4.6/"
+JAVA6_PATH="$HOME/opt/oracle-jdk6/bin/java"
 MAKE="$JAVA6_PATH -jar $FLEX_SDK_HOME/lib/mxmlc.jar +flexlib=$FLEX_SDK_HOME/frameworks sAS3Cam.as"
 
 echo "Executing:"
